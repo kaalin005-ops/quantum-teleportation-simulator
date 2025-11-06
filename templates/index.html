@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Teleportation Simulator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🔮 Quantum Teleportation</h1>
+            <p>Step into the quantum realm and explore how information travels through entanglement</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="psi_angle">🎯 Initial Quantum State (θ)</label>
+                <input type="range" id="psi_angle" min="0" max="3.14" step="0.01" value="0.78">
+                <span id="angle_value" class="control-value">0.78 rad (45°)</span>
+            </div>
+
+            <div class="control-group">
+                <label for="noise_level">🌪️ Entanglement Noise Level</label>
+                <input type="range" id="noise_level" min="0" max="0.5" step="0.01" value="0.0">
+                <span id="noise_value" class="control-value">0.00 (Perfect)</span>
+            </div>
+
+            <div class="control-group">
+                <label for="shots">📊 Simulation Shots</label>
+                <input type="number" id="shots" min="100" max="10000" value="1024">
+                <span class="control-value">Measurement Count</span>
+            </div>
+
+            <div class="buttons">
+                <button id="simulate_btn" class="btn btn-primary">
+                    <span>🚀 Run Teleportation</span>
+                </button>
+                <button id="noise_analysis_btn" class="btn btn-secondary">
+                    <span>📈 Noise Analysis</span>
+                </button>
+                <button id="reset_btn" class="btn btn-danger">
+                    <span>🔄 Reset</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="results">
+            <!-- Step-by-Step Visualization Section -->
+            <div class="result-section">
+                <h3>🔬 Step-by-Step Quantum Teleportation</h3>
+                <div class="step-navigation">
+                    <button id="prev-step" class="step-btn">
+                        ← Previous
+                    </button>
+                    <span id="step-counter">Step 1 of 7</span>
+                    <button id="next-step" class="step-btn">
+                        Next →
+                    </button>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill" style="width: 14.28%"></div>
+                </div>
+                <div class="step-container">
+                    <div id="step-description" class="step-description">
+                        Ready to explore quantum teleportation? Click "Run Teleportation" to begin the journey!
+                    </div>
+                    <div id="circuit-diagram" class="circuit-container">
+                        <pre>Quantum circuit visualization will appear here...</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visualizations">
+                <div class="viz-container">
+                    <h3>🎨 Original Quantum State</h3>
+                    <div id="bloch_sphere" class="bloch-container">
+                        <div class="plot-placeholder">Bloch sphere visualization loading...</div>
+                    </div>
+                </div>
+
+                <div class="viz-container">
+                    <h3>📊 Measurement Results</h3>
+                    <div id="measurement_plot" class="plot-container">
+                        <div class="plot-placeholder">Measurement distribution will appear here</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>🎯 Teleportation Fidelity</h4>
+                    <div id="fidelity_value" class="metric-value">-</div>
+                    <div class="metric-subtitle">Success Probability</div>
+                </div>
+                <div class="metric-card">
+                    <h4>🌪️ Noise Level</h4>
+                    <div id="current_noise" class="metric-value">-</div>
+                    <div class="metric-subtitle">Entanglement Quality</div>
+                </div>
+                <div class="metric-card">
+                    <h4>📈 Current Step</h4>
+                    <div id="current_step" class="metric-value">-</div>
+                    <div class="metric-subtitle">Protocol Progress</div>
+                </div>
+            </div>
+
+            <div id="noise_analysis_plot" class="analysis-plot" style="display: none;">
+                <h3>📈 Noise Impact Analysis</h3>
+                <div id="noise_plot" class="plot-container">
+                    <div class="plot-placeholder">Noise analysis visualization loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation">
+            <h3>💡 Quantum Teleportation Protocol Explained</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>🎯 Step 1: State Preparation</h4>
+                    <p>Initialize the quantum state |ψ⟩ = cos(θ)|0⟩ + sin(θ)|1⟩ on qubit 0 that we want to teleport
+                        across space.</p>
+                </div>
+                <div class="step">
+                    <h4>🔗 Step 2: Create Entanglement</h4>
+                    <p>Generate a Bell pair between qubits 1 and 2 using Hadamard and CNOT gates, creating quantum
+                        correlation.</p>
+                </div>
+                <div class="step">
+                    <h4>⚡ Step 3: Bell Measurement (Part 1)</h4>
+                    <p>Perform CNOT operation between qubit 0 (our state) and qubit 1 (entangled qubit), beginning the
+                        measurement process.</p>
+                </div>
+                <div class="step">
+                    <h4>🔍 Step 4: Bell Measurement (Part 2)</h4>
+                    <p>Apply Hadamard gate to qubit 0 to complete the Bell basis measurement preparation for quantum
+                        state analysis.</p>
+                </div>
+                <div class="step">
+                    <h4>📊 Step 5: Measure & Communicate</h4>
+                    <p>Measure qubits 0 and 1, producing classical results (2 bits) that are sent to the receiver
+                        through classical channels.</p>
+                </div>
+                <div class="step">
+                    <h4>🔄 Step 6: Conditional Corrections</h4>
+                    <p>Based on measurement results, apply precise X and/or Z gates to qubit 2 to perfectly reconstruct
+                        the original quantum state.</p>
+                </div>
+                <div class="step">
+                    <h4>✅ Step 7: Teleportation Complete</h4>
+                    <p>Qubit 2 now contains the exact original state |ψ⟩! Quantum information has been teleported
+                        without physical particle transfer.</p>
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>🔑 Key Quantum Concepts</h3>
+                <div class="concepts-grid">
+                    <div class="concept">
+                        <h5>🌀 Superposition</h5>
+                        <p>Qubits exist in multiple states simultaneously, enabling complex quantum computations beyond
+                            classical limits.</p>
+                    </div>
+                    <div class="concept">
+                        <h5>🔗 Entanglement</h5>
+                        <p>Quantum correlation creates instantaneous connections between distant qubits, the backbone of
+                            teleportation.</p>
+                    </div>
+                    <div class="concept">
+                        <h5>🚫 No-Cloning Theorem</h5>
+                        <p>Quantum states cannot be copied, making teleportation essential for quantum information
+                            transfer.</p>
+                    </div>
+                    <div class="concept">
+                        <h5>📡 Classical Communication</h5>
+                        <p>Required to complete teleportation, ensuring no violation of relativity through
+                            faster-than-light communication.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🔮 Quantum Teleportation Simulator | Built with Python & Flask | Explore the Quantum Realm Safely</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='quantum_circuit.js') }}"></script>
+</body>
+
+</html>
